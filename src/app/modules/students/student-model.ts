@@ -176,6 +176,11 @@ const studentSchema = new Schema<TStudent, studentModel>(
   },
 );
 
+// virtual
+studentSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+});
+
 // pre save middleware/hook use kore password hash kora
 studentSchema.pre('save', async function (next) {
   const user = this;
