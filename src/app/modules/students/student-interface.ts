@@ -41,12 +41,18 @@ export type TStudent = {
   isDeleted: boolean;
 };
 
-export type studentMethods = {
-  isUserExits(id: string): Promise<TStudent | null>;
-};
+//-------------for creating a static method-----------------
+export interface studentModel extends Model<TStudent> {
+  isUserExists(id: string): Promise<TStudent | null>;
+}
 
-export type studentModel = Model<
-  TStudent,
-  Record<string, never>,
-  studentMethods
->;
+//--------------for creating a instance method----------------
+// export type studentMethods = {
+//   isUserExists(id: string): Promise<TStudent | null>;
+// };
+
+// export type studentModel = Model<
+//   TStudent,
+//   Record<string, never>,
+//   studentMethods
+// >;
