@@ -176,13 +176,36 @@ const studentSchema = new Schema<TStudent, studentModel>(
   },
 );
 
-// pre save middleware/hook
+// pre save middleware/hook use kore password hash kora
 studentSchema.pre('save', async function (next) {
   const user = this;
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
   );
+  next();
+});
+
+// post middleware/hook use kore password hide kora
+studentSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+// query middleware use kore amra deleted data hide korte pari
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+//query middleware use kore amra deleted data jno findOne korle na ase tar jonne hide korte pari
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// query middleware a aggregate use kore findone korle data chole ase tar jonne aggregate function
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
 
