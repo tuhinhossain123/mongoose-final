@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import {
+  studentMethods,
+  studentModel,
   TGuardian,
   TLocalGuardian,
   TStudent,
@@ -81,7 +83,7 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent>(
+const studentSchema = new Schema<TStudent, studentModel, studentMethods>(
   {
     id: {
       type: String,
@@ -172,4 +174,9 @@ const studentSchema = new Schema<TStudent>(
   },
 );
 
-export const studentModel = model<TStudent>('Student', studentSchema);
+studentSchema.methods.isUserExits = async function (id: string) {
+  const existingerUser = await Student.findOne({ id });
+  return existingerUser;
+};
+
+export const Student = model<TStudent, studentModel>('Student', studentSchema);
