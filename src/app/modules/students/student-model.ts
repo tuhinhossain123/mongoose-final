@@ -38,18 +38,22 @@ const guardianSchema = new Schema<TGuardian>({
   },
   fatherContactNo: {
     type: String,
+    trim: true,
     required: [true, 'Father Contact No is required'],
   },
   motherName: {
     type: String,
+    trim: true,
     required: [true, 'Mother Name is required'],
   },
   motherOccupation: {
     type: String,
+    trim: true,
     required: [true, 'Mother occupation is required'],
   },
   motherContactNo: {
     type: String,
+    trim: true,
     required: [true, 'Mother Contact No is required'],
   },
 });
@@ -57,55 +61,70 @@ const guardianSchema = new Schema<TGuardian>({
 const localGuradianSchema = new Schema<TLocalGuardian>({
   name: {
     type: String,
+    trim: true,
     required: [true, 'Name is required'],
   },
   occupation: {
     type: String,
+    trim: true,
     required: [true, 'Occupation is required'],
   },
   contactNo: {
     type: String,
+    trim: true,
     required: [true, 'Contact number is required'],
   },
   address: {
     type: String,
+    trim: true,
     required: [true, 'Address is required'],
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel>(
+const studentSchema = new Schema<TStudent>(
   {
-    id: { type: String, required: [true, 'ID is required'], unique: true },
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+      trim: true,
+    },
     password: {
       type: String,
+      trim: true,
       required: [true, 'Password is required'],
       maxlength: [20, 'Password can not be more than 20 characters'],
     },
     name: {
       type: userNameSchema,
+      trim: true,
       required: [true, 'Name is required'],
     },
     gender: {
       type: String,
+      trim: true,
       enum: {
         values: ['male', 'female', 'other'],
         message: '{VALUE} is not a valid gender',
       },
       required: [true, 'Gender is required'],
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: String, trim: true },
     email: {
       type: String,
       required: [true, 'Email is required'],
       unique: true,
+      trim: true,
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
     emergencyContactNo: {
       type: String,
+      trim: true,
       required: [true, 'Emergency contact number is required'],
     },
     bloogGroup: {
       type: String,
+      trim: true,
       enum: {
         values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
         message: '{VALUE} is not a valid blood group',
@@ -113,6 +132,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     presentAddress: {
       type: String,
+      trim: true,
       required: [true, 'Present address is required'],
     },
     permanentAddress: {
@@ -121,15 +141,18 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     guardian: {
       type: guardianSchema,
+      trim: true,
       required: [true, 'Guardian information is required'],
     },
     localGuardian: {
       type: localGuradianSchema,
+      trim: true,
       required: [true, 'Local guardian information is required'],
     },
     profileImg: { type: String },
     isActive: {
       type: String,
+      trim: true,
       enum: {
         values: ['active', 'blocked'],
         message: '{VALUE} is not a valid status',
@@ -139,6 +162,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     isDeleted: {
       type: Boolean,
       default: false,
+      trim: true,
     },
   },
   {
@@ -148,4 +172,4 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   },
 );
 
-export const studentModel = model<TStudent, StudentModel>('Student', studentSchema);
+export const studentModel = model<TStudent>('Student', studentSchema);
