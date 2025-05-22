@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
 import {
   studentModel,
   TGuardian,
@@ -6,6 +8,7 @@ import {
   TStudent,
   TUserName,
 } from './student-interface';
+import config from '../../config';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -172,6 +175,16 @@ const studentSchema = new Schema<TStudent, studentModel>(
     },
   },
 );
+
+// pre save middleware/hook
+studentSchema.pre('save', async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
 
 // --------------creaing a custom static method-----------
 studentSchema.statics.isUserExists = async function (id: string) {
