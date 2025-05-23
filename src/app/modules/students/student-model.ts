@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import bcrypt from 'bcrypt';
 import {
   studentModel,
   TGuardian,
@@ -8,7 +7,6 @@ import {
   TStudent,
   TUserName,
 } from './student-interface';
-import config from '../../config';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -99,12 +97,6 @@ const studentSchema = new Schema<TStudent, studentModel>(
       unique: true,
       ref: 'User',
     },
-    password: {
-      type: String,
-      trim: true,
-      required: [true, 'Password is required'],
-      maxlength: [20, 'Password can not be more than 20 characters'],
-    },
     name: {
       type: userNameSchema,
       trim: true,
@@ -176,22 +168,6 @@ const studentSchema = new Schema<TStudent, studentModel>(
 // virtual
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-// pre save middleware/hook use kore password hash kora
-studentSchema.pre('save', async function (next) {
-  const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-  next();
-});
-
-// post middleware/hook use kore password hide kora
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
 });
 
 // query middleware use kore amra deleted data hide korte pari

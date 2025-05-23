@@ -1,7 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { studentServices } from './student-service';
 
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await studentServices.getAllStudentFromDB();
     res.status(200).json({
@@ -9,15 +13,15 @@ const getAllStudents = async (req: Request, res: Response) => {
       message: 'students are retrived succesfully',
       data: result,
     });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'somethig went wrong',
-      error: err,
-    });
+  } catch (err) {
+    next(err);
   }
 };
-const getSingleStudents = async (req: Request, res: Response) => {
+const getSingleStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await studentServices.getSingleStudentFromDB(studentId);
@@ -26,15 +30,15 @@ const getSingleStudents = async (req: Request, res: Response) => {
       message: 'students is retrived succesfully',
       data: result,
     });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'somethig went wrong',
-      error: err,
-    });
+  } catch (err) {
+    next(err);
   }
 };
-const deleteStudents = async (req: Request, res: Response) => {
+const deleteStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await studentServices.deletedStudentFromDB(studentId);
@@ -43,12 +47,8 @@ const deleteStudents = async (req: Request, res: Response) => {
       message: 'students is deleted succesfully',
       data: result,
     });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'somethig went wrong',
-      error: err,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
