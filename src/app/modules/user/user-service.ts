@@ -42,10 +42,10 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   if (Object.keys(newUser).length) {
     //set id, _id as user
     studentData.id = newUser.id;
-    studentData.user = newUser._id;//reference _id
+    studentData.user = newUser._id; //reference _id
 
     const newStudent = await Student.create(studentData);
-    return newStudent
+    return newStudent;
   }
 };
 

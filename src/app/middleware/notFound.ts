@@ -10,4 +10,4 @@ const notfound = (_req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-export default notfound
+export default notfound;

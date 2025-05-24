@@ -12,7 +12,6 @@ app.use(cors());
 // applications routes
 app.use('/api/v1', router);
 
-
 app.get('/', (_req: Request, res: Response) => {
   const a = 10;
   res.send(a);
