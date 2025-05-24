@@ -33,6 +33,18 @@ const academicSemesterSchema = new Schema<TAcademicSemester>({
   },
 });
 
+// ekoi bochor a ekoi name a 2 ta name a jno smester create na hoy tar validation check here
+academicSemesterSchema.pre('save', async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
+  if (isSemesterExists) {
+    throw new Error('semester is already exists !!');
+  }
+  next();
+});
+
 export const AcademicSemester = model<TAcademicSemester>(
   'AcademicSemester',
   academicSemesterSchema,
