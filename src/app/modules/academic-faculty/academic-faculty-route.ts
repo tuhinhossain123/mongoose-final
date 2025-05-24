@@ -21,6 +21,6 @@ router.patch(
   academicFacultyControllers.updateAcademicFaculty,
 );
 
-router.get('/', academicFacultyControllers.getSingleAcademicFaculty);
+router.get('/', academicFacultyControllers.getAllAcademicFaculties);
 
 export const academicFacultyRoutes = router;
