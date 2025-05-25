@@ -3,6 +3,7 @@ import { Student } from './student-model';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { User } from '../user/user-model';
+import { TStudent } from './student-interface';
 
 const getAllStudentFromDB = async () => {
   const result = await Student.find().populate('admissionSemester');
@@ -10,8 +11,38 @@ const getAllStudentFromDB = async () => {
   return result;
 };
 const getSingleStudentFromDB = async (id: string) => {
-  // const result = await Student.findOne({ id });
-  const result = await Student.aggregate([{ $match: { id: id } }]);
+  const result = await Student.findOne({ id });
+  // const result = await Student.aggregate([{ $match: { id: id } }]);
+  return result;
+};
+const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
+  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+  const modifiedUpdateData: Record<string, unknown> = {
+    ...remainingStudentData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdateData[`name.${key}`] = value;
+    }
+  }
+
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedUpdateData[`guardian.${key}`] = value;
+    }
+  }
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedUpdateData[`localGuardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, modifiedUpdateData, {
+    new: true,
+    runValidators: true,
+  });
+  // const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
 
@@ -44,6 +75,7 @@ const deletedStudentFromDB = async (id: string) => {
   } catch (err) {
     await session.abortTransaction();
     await session.endSession();
+    throw new Error('failed to delete student');
   }
 };
 
@@ -51,4 +83,5 @@ export const studentServices = {
   getAllStudentFromDB,
   getSingleStudentFromDB,
   deletedStudentFromDB,
+  updateStudentFromDB,
 };

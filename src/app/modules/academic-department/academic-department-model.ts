@@ -36,7 +36,6 @@ academicDepartmentSchema.pre('save', async function (next) {
   next();
 });
 
-
 // deleter kora id diye data update korle update hye jay eta na hoyar validation
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
@@ -51,8 +50,6 @@ academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
 
   next();
 });
-
-
 
 export const AcademicDepartment = model<TAcademicDepartment>(
   'academicDepartment',
