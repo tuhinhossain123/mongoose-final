@@ -160,6 +160,10 @@ const studentSchema = new Schema<TStudent, studentModel>(
       type: Boolean,
       default: false,
     },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment'
+    },
   },
   {
     toJSON: {
