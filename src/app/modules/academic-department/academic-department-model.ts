@@ -21,20 +21,20 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>(
 );
 
 // ekoi name a jno department create na hoy tar jonno validation
-academicDepartmentSchema.pre('save', async function (next) {
-  const isDepartmentExist = await AcademicDepartment.findOne({
-    name: this.name,
-  });
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepartmentExist = await AcademicDepartment.findOne({
+//     name: this.name,
+//   });
 
-  if (isDepartmentExist) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'This department is already exist!',
-    );
-  }
+//   if (isDepartmentExist) {
+//     throw new AppError(
+//       httpStatus.NOT_FOUND,
+//       'This department is already exist!',
+//     );
+//   }
 
-  next();
-});
+//   next();
+// });
 
 // deleter kora id diye data update korle update hye jay eta na hoyar validation
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
