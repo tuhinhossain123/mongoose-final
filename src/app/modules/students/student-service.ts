@@ -67,10 +67,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   // return fieldQuery;
 
   // industry pretten code
-  const studentQuery = new QueryBuilder(
-    Student.find(),
-    query,
-  )
+  const studentQuery = new QueryBuilder(Student.find(), query)
     .search(studentSearchAbleFields)
     .filter()
     .sort()
@@ -81,7 +78,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await Student.findOne({ id });
+  const result = await Student.findById(id);
   // const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
@@ -108,7 +105,7 @@ const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
     }
   }
 
-  const result = await Student.findOneAndUpdate({ id }, modifiedUpdateData, {
+  const result = await Student.findByIdAndUpdate(id, modifiedUpdateData, {
     new: true,
     runValidators: true,
   });
@@ -123,16 +120,19 @@ const deletedStudentFromDB = async (id: string) => {
   try {
     // start transection
     session.startTransaction();
-    const deletedStudent = await Student.findOneAndUpdate(
-      { id },
+    const deletedStudent = await Student.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
     if (!deletedStudent) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student');
     }
-    const deletedUser = await User.findOneAndUpdate(
-      { id },
+
+    // get user _id from deleteStudent
+    const userId = deletedStudent.user;
+    const deletedUser = await User.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
       { new: true, session },
     );
