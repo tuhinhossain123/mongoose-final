@@ -30,7 +30,7 @@ router.put(
 router.delete(
   '/:courseId/remove-faculties',
   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
-  courseControllers.deletedCourse,
+  courseControllers.removeFacultiesFromCourse,
 );
 
 router.get('/', courseControllers.getAllCourses);
