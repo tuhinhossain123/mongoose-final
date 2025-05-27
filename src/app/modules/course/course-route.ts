@@ -14,11 +14,11 @@ router.post(
 
 router.get('/:id', courseControllers.getAllCourses);
 
-// router.patch(
-//   '/:id',
-//   validateRequest(CourseValidations.updateCourseValidationSchema),
-//   courseControllers.,
-// );
+router.patch(
+  '/:id',
+  validateRequest(CourseValidations.updateCourseValidationSchema),
+  courseControllers.updateCourse,
+);
 
 router.delete('/:id', courseControllers.deletedCourse);
 
