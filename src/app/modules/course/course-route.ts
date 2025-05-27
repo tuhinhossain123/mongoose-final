@@ -36,4 +36,4 @@ router.delete(
 
 router.get('/', courseControllers.getAllCourses);
 
-export const CourseRoutes = router;
+export const coursesRoute = router;
