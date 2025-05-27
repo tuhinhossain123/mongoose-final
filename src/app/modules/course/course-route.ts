@@ -1,4 +1,3 @@
-
 import express from 'express';
 import validateRequest from '../../middleware/validateRequest';
 import { CourseValidations } from './course-validation';
@@ -22,11 +21,11 @@ router.patch(
 
 router.delete('/:id', courseControllers.deletedCourse);
 
-// router.put(
-//   '/:courseId/assign-faculties',
-//   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
-//   CourseControllers.assignFacultiesWithCourse,
-// );
+router.put(
+  '/:courseId/assign-faculties',
+  validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
+  courseControllers.assignFacultiesWithCourse,
+);
 
 router.delete(
   '/:courseId/remove-faculties',
