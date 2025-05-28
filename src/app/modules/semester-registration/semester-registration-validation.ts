@@ -1,7 +1,5 @@
-
 import { z } from 'zod';
 import { SemesterRegistrationStatus } from './semester-registration-const';
-
 
 const createSemesterRegistrationValidationSchema = z.object({
   body: z.object({

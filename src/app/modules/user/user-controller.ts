@@ -28,7 +28,6 @@ const createFaculty = catchAsync(async (req, res) => {
   });
 });
 
-
 // admin
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
@@ -43,9 +42,8 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
-
 export const userControllers = {
   createStudent,
   createFaculty,
-  createAdmin
+  createAdmin,
 };

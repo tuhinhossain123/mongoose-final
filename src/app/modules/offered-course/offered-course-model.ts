@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { TOfferedCourse } from './offered-course-interface';
 import { Days } from './offered-course-const';
 
-
 const offeredCourseSchema = new mongoose.Schema<TOfferedCourse>(
   {
     semesterRegistration: {

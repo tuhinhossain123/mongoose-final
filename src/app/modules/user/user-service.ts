@@ -5,7 +5,11 @@ import { TStudent } from '../students/student-interface';
 import { Student } from '../students/student-model';
 import { TUser } from './user-interface';
 import { User } from './user-model';
-import { generateAdminId, generatedStudentId, generateFacultyId } from './user-utlis';
+import {
+  generateAdminId,
+  generatedStudentId,
+  generateFacultyId,
+} from './user-utlis';
 import AppError from '../../errors/appError';
 import httpStatus from 'http-status';
 import { TFaculty } from '../faculty/faculty-interface';
@@ -30,7 +34,6 @@ import { Admin } from '../admin/admin-model';
 //   // const newUser = await student.save();  //built in instance method
 //   // return newUser;
 // };
-
 
 // create student
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
@@ -84,7 +87,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     throw new Error('failed to create student');
   }
 };
-
 
 // create faculty
 const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
@@ -143,7 +145,6 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   }
 };
 
-
 // create admin
 
 const createAdminIntoDB = async (password: string, payload: TFaculty) => {
@@ -164,7 +165,7 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
     userData.id = await generateAdminId();
 
     // create a user (transaction-1)
-    const newUser = await User.create([userData], { session }); 
+    const newUser = await User.create([userData], { session });
 
     //create a admin
     if (!newUser.length) {
@@ -192,10 +193,8 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
   }
 };
 
-
-
 export const userServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
-  createAdminIntoDB
+  createAdminIntoDB,
 };

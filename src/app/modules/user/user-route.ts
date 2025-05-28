@@ -19,7 +19,6 @@ router.post(
   userControllers.createFaculty,
 );
 
-
 router.post(
   '/create-admin',
   validateRequest(createAdminValidationSchema),
