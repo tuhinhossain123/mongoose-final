@@ -25,7 +25,7 @@ router.patch(
   validateRequest(
     SemesterRegistrationValidations.upadateSemesterRegistrationValidationSchema,
   ),
-  semesterRegistrationControllers.updategetSemesterRegistration,
+  semesterRegistrationControllers.updateSemesterRegistration,
 );
 
 // router.delete(
