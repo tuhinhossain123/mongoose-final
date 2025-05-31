@@ -67,7 +67,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   // return fieldQuery;
 
   // industry pretten code
-  const studentQuery = new QueryBuilder(Student.find(), query)
+  const studentQuery = new QueryBuilder(Student.find().populate('user'), query)
     .search(studentSearchAbleFields)
     .filter()
     .sort()
