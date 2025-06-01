@@ -6,6 +6,7 @@ import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { createToken } from './auth-utils';
+import { sendEmail } from '../../utils/sendEmail';
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistByCustomId(payload.id);
@@ -176,14 +177,14 @@ const forgetPassword = async (userId: string) => {
     userId: user.id,
     role: user?.role,
   };
-  const accessToken = createToken(
+  const resetToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     '10m',
   );
 
-  const resetLink = `http://localhost:3000?id=${user.id}&token=${accessToken}`;
-  console.log(resetLink);
+  const resetLink = `${config.reset_pass_ui_link}?id=${user.id}&token=${resetToken}`;
+  sendEmail(user.email, resetLink);
 };
 
 export const authServices = {
