@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { AnyZodObject } from 'zod';
 import catchAsync from '../utils/catchAsync';
 
-
 // the code is not clean
 // const validateRequest = (schema: AnyZodObject) => {
 //   return async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +22,7 @@ const validateRequest = (schema: AnyZodObject) => {
     //check validation
     await schema.parseAsync({
       body: req.body,
+      cookies: req.cookies,
     });
 
     next();
