@@ -16,6 +16,7 @@ import { TFaculty } from '../faculty/faculty-interface';
 import { AcademicDepartment } from '../academic-department/academic-department-model';
 import { Faculty } from '../faculty/faculty-model';
 import { Admin } from '../admin/admin-model';
+import { verifyToken } from '../auth/auth-utils';
 
 // ei comment kore code bojar jonne rekhe dilam
 // const createStudentIntoDB = async (password:string, payload: TStudent) => {
@@ -45,7 +46,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
   // set student role
   userData.role = 'student';
-  userData.email= payload.email
+  userData.email = payload.email;
 
   // find academic semester info
   const admissionSemester = await AcademicSemester.findById(
@@ -99,7 +100,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
   //set student role
   userData.role = 'faculty';
-  userData.email= payload.email
+  userData.email = payload.email;
 
   // find academic department info
   const academicDepartment = await AcademicDepartment.findById(
@@ -158,7 +159,7 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
 
   //set student role
   userData.role = 'admin';
-  userData.email= payload.email
+  userData.email = payload.email;
 
   const session = await mongoose.startSession();
 
@@ -196,8 +197,26 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
   }
 };
 
+const getMe = async (token: string) => {
+  const decoded = verifyToken(token, config.jwt_access_secret as string);
+  const { userId, role } = decoded;
+  let result = null;
+  if (role === 'student') {
+    result = await Student.findOne({ id: userId });
+  }
+  if (role === 'faculty') {
+    result = await Faculty.findOne({ id: userId });
+  }
+  if (role === 'admin') {
+    result = await Admin.findOne({ id: userId });
+  }
+
+  return result;
+};
+
 export const userServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
   createAdminIntoDB,
+  getMe,
 };
