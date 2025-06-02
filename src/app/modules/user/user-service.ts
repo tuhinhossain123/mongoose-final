@@ -17,6 +17,7 @@ import { AcademicDepartment } from '../academic-department/academic-department-m
 import { Faculty } from '../faculty/faculty-model';
 import { Admin } from '../admin/admin-model';
 import { verifyToken } from '../auth/auth-utils';
+import { sendIamgesToCloudinary } from '../../utils/sendImagesToCloudinary';
 
 // ei comment kore code bojar jonne rekhe dilam
 // const createStudentIntoDB = async (password:string, payload: TStudent) => {
@@ -61,6 +62,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     session.startTransaction();
     //set  generated id
     userData.id = await generatedStudentId(admissionSemester);
+
+    // send image to cloudinary
+    sendIamgesToCloudinary()
 
     //create a user (transection-1)  ekhane userdata object hisebe chilo but transection use korar karone array hisebe dite hoice
     const newUser = await User.create([userData], { session });
