@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose';
 import config from '../../config';
 import { AcademicSemester } from '../academic-semister/academic-semister-model';
@@ -38,7 +39,11 @@ import { sendIamgesToCloudinary } from '../../utils/sendImagesToCloudinary';
 // };
 
 // create student
-const createStudentIntoDB = async (password: string, payload: TStudent) => {
+const createStudentIntoDB = async (
+  file: any,
+  password: string,
+  payload: TStudent,
+) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -64,7 +69,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     userData.id = await generatedStudentId(admissionSemester);
 
     // send image to cloudinary
-    sendIamgesToCloudinary()
+    const imageName = `${userData.id}${payload?.name?.firstName}`;
+    const path = file?.path;
+    const { secure_url } = await sendIamgesToCloudinary(imageName, path);
 
     //create a user (transection-1)  ekhane userdata object hisebe chilo but transection use korar karone array hisebe dite hoice
     const newUser = await User.create([userData], { session });
@@ -76,6 +83,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     //set id, _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //reference _id
+    payload.profileImg = secure_url;
 
     //create a student (transection-2)
     const newStudent = await Student.create([payload], { session });
@@ -218,16 +226,15 @@ const getMe = async (userId: string, role: string) => {
   return result;
 };
 
-
-const chageStatus = async(id:string, payload:{status:string})=>{
-  const result = await User.findByIdAndUpdate(id,payload,{new:true})
-  return result
-}
+const chageStatus = async (id: string, payload: { status: string }) => {
+  const result = await User.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
 
 export const userServices = {
   createStudentIntoDB,
   createFacultyIntoDB,
   createAdminIntoDB,
   getMe,
-  chageStatus
+  chageStatus,
 };
