@@ -1,9 +1,11 @@
 import { v2 as cloudinary } from 'cloudinary';
+import config from '../config';
+import multer from 'multer';
 export const sendIamgesToCloudinary = () => {
   cloudinary.config({
-    cloud_name: 'du0dvvnr0',
-    api_key: '951363123482353',
-    api_secret: '<your_api_secret>', // Click 'View API Keys' above to copy your API secret
+    cloud_name: config.cloudinary_cloud_name,
+    api_key: config.cloudinary_api_key,
+    api_secret: config.cloudinary_api_secret,
   });
 
   cloudinary.uploader.upload(
@@ -11,8 +13,23 @@ export const sendIamgesToCloudinary = () => {
     {
       public_id: 'shoes',
     },
-    function(error,result){
-        console.log(result);
-    }
+    function (error, result) {
+      console.log(result);
+    },
   );
 };
+
+
+// multer code
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, process.cwd()+'/uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix)
+  }
+})
+
+export const upload = multer({ storage: storage })
