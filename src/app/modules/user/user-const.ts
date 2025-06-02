@@ -4,4 +4,4 @@ export const USER_Role = {
   admin: 'admin',
 } as const;
 
-
+export const UserStatus = ['in-progress', 'blocked'];
